@@ -1,70 +1,37 @@
 #include <stdio.h>
-
-int check_century(int y);
-
-int code_month(int m);
-
-int code_year(int y);
-
-int main(void) {
-int day, month, year;
-scanf("%d",&day);
-scanf("%d",&month);
-scanf("%d",&year);
-int ans = (day + code_month(month) + code_year(year)) % 7;
-if(ans == 0) printf("%s", "Saturday");
-if(ans == 1) printf("%s", "Sunday");
-if(ans == 2) printf("%s", "Monday");
-if(ans == 3) printf("%s", "Tuesday");
-if(ans == 4) printf("%s", "Wednesday");
-if(ans == 5) printf("%s", "Thursday");
-if(ans == 6) printf("%s", "Friday");
-return 0;
-}
-int check_century(int y){
-int first_two_numbers = y / 100;
-if(first_two_numbers % 4 == 0){
-return 6;
-}
-if(first_two_numbers % 4 == 1){
-return 4;
-}
-if(first_two_numbers % 4 == 2){
-return 2;
-}
-if(first_two_numbers % 4 == 3){
-return 0;
-}
-return 0;
-}
-
-int code_month(int m){
-if(m == 1 || m == 10){
-return 1;
-}
-if (m == 5){
-return 2;
-}
-if (m == 8){
-return 3;
-}
-if (m == 2 || m == 3 || m == 11){
-return 4;
-}
-if (m == 6){
-return 5;
-}
-if (m == 12 || m == 9){
-return 6;
-}
-if (m == 4 || m == 7){
-return 0;
-}
-return -1;
-}
-
-int code_year(int y){
-int last_two_numbers = y % 100;
-int res = (check_century(y) + last_two_numbers + (last_two_numbers/4)) % 7;
-return res;
+int main(int argc, char *argv[]) {
+    float temp;
+    char m;
+    temp = atoi (argv[1]);
+    printf("Enter you temperature\n");
+    scanf("%f %c", &temp,&m);
+    switch (m)
+    {
+       case 'c': if (temp <= -273.15)
+            printf("Unable to convert as temperature is equal to absolute zero\n");
+        else
+         {
+          printf("C %.2f\n", temp);
+          printf("F %.2f\n", 1.8 * temp + 32);
+          printf("K %.2f\n", temp + 273.15);}
+          break;
+    case 'f': if (temp <= -459,67)
+            printf("Unable to convert as temperature is equal to absolute zero\n");
+    else
+        {
+       printf("C %.2f\n", 5.0/9.0*(temp-32));
+       printf("F %.2f\n", temp);
+       printf("K %.2f\n",5 * (temp - 32) + 273.15);}
+       break;
+    case 'k': if (temp <= 0)
+            printf("Unable to convert as temperature is equal to absolute zero\n");
+        else
+        {
+       printf("C %.2f\n", temp - 273.15);
+       printf("F %.2f\n", 9 * (temp - 273.15)/5.0 + 32);
+       printf("K %.2f\n", temp);}
+       break;
+    default: printf("eror, try again");
+    }
+    return 0;
 }
