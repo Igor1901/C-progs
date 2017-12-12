@@ -1,100 +1,87 @@
-#include "Stack.h"
-#define START_SIZE 10
-#define ADDER 10
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
 
-    stack* stackInit_d() {
-        stack* mem = NULL;
-        mem = malloc(sizeof(mem));
-        if(mem == NULL) {
-            exit(0);
+int BMsearch(char str, const char word) {
+    int N=strlen(str);
+    int M=strlen(word) -1;
+
+    int d[256];
+    int i;
+    for (i = 0; i<256; i++)
+        d[i] = M;
+
+    for (i = 0; i<M - 1; i++)
+        d[(unsigned char) word[i]] = M - i - 1;
+
+    int result = -1;
+    for (i = M; i = N; i += d[(unsigned char) str[i - 1]]) {
+        int j, k;
+        for (j = M - 1, k = i - 1; j = 0 && str[k] == word[j]; k--, j--);
+        if (j  0) {
+            result = i - M;
+            break;
+        }
+        if (i == N) {
+            result = -1;
+            break;
+        }
+    }
+    return result;
+}
+
+int main(int argc, char argv[]) {
+
+    FILE file = NULL;
+    size_t size = sizeof(char)  2048;
+    char filename = NULL;
+
+    if (argc  2  (file = fopen(argv[1], r) ) == NULL) {
+        while (!file) {
+            printf(Write filenamen);
+            getline(&filename, &size, stdin); DGitHubRepLab-WorkspaceSearchInFiletest.txt
+
+            filename[strlen(filename)-1]= '0';
+            file = fopen(filename, r);
+
+            if (file == NULL) {
+                printf(Error the file not found!n);
             }
-        mem->size = START_SIZE;
-        mem->inf = malloc(mem->size * sizeof(double));
-        if(mem->inf == NULL) {
-            free(mem);
-            exit(0);
-            }
-        mem->top = 0;
-        return mem;
-    }
-
-     stack* stackInit_c() {
-        stack* mem = NULL;
-        mem = malloc(sizeof(mem));
-        if(mem == NULL) {
-            exit(0);
-            }
-        mem->size = START_SIZE;
-        mem->inf = malloc(mem->size * sizeof(char));
-        if(mem->inf == NULL) {
-            free(mem);
-            exit(0);
-            }
-        mem->top = 0;
-        return mem;
-    }
-
-    void deletestack(stack** pStack) {
-        free((*pStack)->inf);
-        free(*pStack);
-        *pStack = NULL;
-
-    }
-
-    void resizestack(stack* pStack) {
-        pStack->size += ADDER;
-        pStack->inf = realloc(pStack->inf, pStack->size * sizeof(double));
-        if(pStack->inf == NULL) {
-            exit(0);
         }
+        free(filename);
+    }
+    printf(Success File opened!n);
+
+    int row = 0;
+    int column = -1;
+    char line = malloc(size);
+    char input = NULL;
+
+    if (argc  2) {
+        input = argv[2];
+    } else {
+        printf(Write string for searchn);
+        getline(&input, &size, stdin);
     }
 
-    void push_d(stack* pStack, double value) {
-        if (pStack->top >= pStack->size) {
-            resizestack(pStack);
-        }
-        pStack->top++;
-        pStack->inf[pStack->top] = value;
+    printf(Success Start searching...n);
 
+    while (fgets(line, size, file) != NULL) {
+        row++;
+        column = BMsearch(line, input);
+
+        if (column != -1)
+            break;
     }
 
-    void push_c(stack* pStack, char value) {
-        if (pStack->top >= pStack->size) {
-            resizestack(pStack);
-        }
-        pStack->top++;
-        pStack->inf[pStack->top] = value;
-
+    if (column == -1) {
+        printf(Not foundn);
+    } else {
+        printf(File string%sYour string%sn, line, input);
+        printf(Row %dnColumn %dn, row, ++column);
     }
-
-
-    double pop_d(stack* pStack) {
-        if (pStack->top == 0) {
-            exit(0);
-        }
-        return pStack->inf[pStack->top--];
-
-    }
-
-    char pop_c(stack* pStack) {
-        if (pStack->top == 0) {
-            exit(0);
-        }
-        return pStack->inf[pStack->top--];
-
-    }
-
-    int stackTop(const stack* pStack) {
-        if (pStack->top == 0) {
-            exit(0);
-        }
-        return(pStack->inf[pStack->top]);
-    }
-
-    int isEmpty(const stack* pStack) {
-        if(pStack->top == 0){
-            return 1;
-        }else {
-            return 0;
-        }
-    }
+    free(line);
+    free(input);
+    fclose(file);
+    return 0;
+}
